@@ -13,9 +13,59 @@ const { NotImplementedError } = require('../extensions/index.js');
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
-function transform(/* arr */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function transform(arr) {
+	let copyArr = [];
+	try {
+		copyArr = arr.slice();
+	} catch (e) {
+		if (e) throw new Error("'arr' parameter must be an instance of the Array!");
+	}
+
+	let result = {};
+
+	let indexElementRemove = [];
+	let indexElementDouble = [];
+
+	for (let i = 0; i < copyArr.length; i++) {
+		if (typeof copyArr[i] === 'string') {
+			if (copyArr[i].includes('--discard-') || copyArr[i].includes('--double-')) {
+
+				if (!indexElementRemove.includes(i + 1) && copyArr[i + 1]) {
+					if (copyArr[i] === '--discard-next') {
+						indexElementRemove.push(i + 1);
+						delete result[i + 1];
+					}
+
+					if (copyArr[i] === '--double-next') {
+						indexElementDouble.push(i + 1);
+						result[i + 1] = copyArr[i + 1];
+						result[i + 2] = copyArr[i + 1];
+					}
+				}
+
+				if (!indexElementRemove.includes(i - 1) && copyArr[i - 1]) {
+					if (copyArr[i] === '--discard-prev') {
+						indexElementRemove.push(i - 1);
+						delete result[i - 1];
+					}
+
+					if (copyArr[i] === '--double-prev') {
+						indexElementDouble.push(i - 1);
+						result[i - 1] = copyArr[i - 1];
+						result[i - 2] = copyArr[i - 1];
+					}
+				}
+
+				indexElementRemove.push(i);
+			}
+		}
+
+		if (!indexElementRemove.includes(i) && !indexElementDouble.includes(i)) {
+			result[i] = copyArr[i];
+		}
+	}
+
+	return Object.values(result);
 }
 
 module.exports = {
