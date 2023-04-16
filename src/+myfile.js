@@ -1,14 +1,34 @@
-function getSumOfDigits(n) {
-    let arrN = n.toString().split('');
+function sortByHeight(arr) {
+    let obj = {};
+    let arrForSort = [];
+    let arrIndex = [];
 
-    let result = arrN.reduce((sum, current) => sum + +current, 0);
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == '-1') {
+            arrIndex.push(i);
+        }
 
-    if (result >= 10){
-        result = getSumOfDigits(result);
+        if (arr[i] != '-1'){
+            arrForSort.push(arr[i]);
+        }
     }
 
-    return result;
+    arrForSort.sort((a, b) => a - b);
+    let j = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arrIndex.includes(i)){
+            obj[i] = '-1';
+        } else {
+            obj[i] = arrForSort[j];
+            j++;
+        }
+        if (arr[i] == '-1') {
+            arrIndex.push(i);
+        }
+    }
+
+    return Object.values(obj);
 }
 
-console.log(getSumOfDigits(99))
-//, 9);
+console.log(sortByHeight([-1, 190, 150, 170, -1, -1, 160, 180]))
+ //   [-1, 150, 160, 170, -1, -1, 180, 190],
