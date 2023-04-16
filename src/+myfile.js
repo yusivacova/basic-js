@@ -1,34 +1,81 @@
-function sortByHeight(arr) {
-    let obj = {};
-    let arrForSort = [];
-    let arrIndex = [];
+function minesweeper(matrix) {
+	let matrixCopy = structuredClone(matrix);
 
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == '-1') {
-            arrIndex.push(i);
-        }
 
-        if (arr[i] != '-1'){
-            arrForSort.push(arr[i]);
-        }
-    }
+	for (let i = 0; i < matrixCopy.length; i++) {
+		let counter = 0;
+		let oneNum = false;
 
-    arrForSort.sort((a, b) => a - b);
-    let j = 0;
-    for (let i = 0; i < arr.length; i++) {
-        if (arrIndex.includes(i)){
-            obj[i] = '-1';
-        } else {
-            obj[i] = arrForSort[j];
-            j++;
-        }
-        if (arr[i] == '-1') {
-            arrIndex.push(i);
-        }
-    }
+		let arrCheck = matrix[i];
+		let arr = matrixCopy[i];
+		let nextArr = matrixCopy[i + 1];
+		let prevArr = matrixCopy[i - 1];
 
-    return Object.values(obj);
+		for (let j = 0; j < arrCheck.length; j++) {
+			if (i < matrixCopy.length - 1 && arrCheck[j] === true) {
+				counter++;
+				if (i === 0) {
+					arr[j] = arr[j] - 1;
+					if (arr[j + 1] != undefined) {
+						arr[j + 1] = 1;
+						nextArr[j + 1] = 1;
+					}
+					nextArr[j] = 1;
+					if (arr[j - 1] != undefined) {
+						arr[j - 1] = 1;
+						nextArr[j - 1] = 1;
+					}
+
+				} else {
+					if (arr[j + 1] != undefined) {
+						arr[j + 1] += 1;
+						nextArr[j + 1] += 1;
+						prevArr[j + 1] += 1;
+					}
+					nextArr[j] += 1
+					prevArr[j] += 1;
+					if (arr[j - 1] != undefined) {
+						arr[j - 1] += 1;
+						nextArr[j - 1] += 1;
+						prevArr[j - 1] += 1;
+					}
+				}
+			}
+
+
+		}
+
+		if (arr.includes(1)) {
+			oneNum = true;
+		}
+		if (!counter && !oneNum) {
+			for (let j = 0; j < arrCheck.length; j++) {
+				arr[j] = 0;
+			}
+		}
+	}
+	
+
+	return matrixCopy;
 }
 
-console.log(sortByHeight([-1, 190, 150, 170, -1, -1, 160, 180]))
- //   [-1, 150, 160, 170, -1, -1, 180, 190],
+const matrix1 = [
+	[true, false, false],
+	[false, true, false],
+	[false, false, false]
+]
+
+console.log(minesweeper(matrix1))
+//The result should be following:
+//[
+//[1, 2, 1],
+//[2, 1, 1],
+//[1, 1, 1]
+//]
+
+console.log(minesweeper([
+	[false, false, false],
+	[false, false, false],
+]));
+
+
