@@ -1,31 +1,61 @@
-function getCommonCharacterCount(s1, s2) {
-    let arrS1 = s1.split('');
-    let arrS2 = s2.split('');
+function deleteDigit(n) {
+    let arrN = n.toString().split('');
 
-    let result = 0;
+    let arrDigitN = [];
 
-    for (let i = 0; i < arrS1.length; i++) {
-        if (arrS2.includes(s1[i])) {
-            arrS1[i] = '';
-            let index = arrS2.indexOf(s1[i]);
-            arrS2[index] = '';
+    for (let i = 0; i < arrN.length; i++){
+        let next = arrN[i + 1];
+        let prev = arrN[i - 1];
+
+        if (i) {
+            if (prev < arrN[i]) {
+                arrN[i - 1] = '';
+                arrDigitN.push(arrN.join(''));
+                arrN[i - 1] = prev;
+            }
+
+            if (next > arrN[i]){
+                let current = arrN[i];
+                arrN[i] = '';
+                arrDigitN.push(arrN.join(''));
+                arrN[i] = current;
+            } 
         }
-
     }
 
-
-    result = s1.length - arrS1.join('').length;
-console.log(result)
-    return result;
+   // if (!arrDigitN.length) return n;
+    return +(arrDigitN.join(''));
 }
 
-getCommonCharacterCount('aabcc', 'adcaa')
-//, 3);
-getCommonCharacterCount('zzzz', 'zzzzzzz')
-//, 4);
-getCommonCharacterCount('abca', 'xyzbac')
-//, 3);
-getCommonCharacterCount('', 'abc')
-//, 0);
-getCommonCharacterCount('a', 'b')
-//, 0);
+console.log(deleteDigit(222219))
+//, 22229);
+//console.log(deleteDigit(109))
+//, 19);
+console.log(deleteDigit(342))
+//, 42);
+
+//console.log(deleteDigit(1001))
+//, 101);)
+console.log(deleteDigit(10))
+//, 1);
+
+
+/*
+function deleteDigit(n) {
+    let arrN = n.toString().split('');
+    const minOne = Math.min(...arrN).toString();
+    let index = arrN.indexOf(minOne);
+    arrN[index] = '';
+   
+    let firstNumber = Number(arrN.join(''));
+    arrN[index] = 10;
+    const minTwo = Math.min(...arrN).toString();
+ 
+    arrN[index] = minOne;
+    index = arrN.indexOf(minTwo);
+    arrN[index] = '';
+    let secondNumber = Number(arrN.join(''));
+
+    return Math.max(firstNumber, secondNumber);
+}
+*/
