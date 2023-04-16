@@ -1,81 +1,26 @@
-function minesweeper(matrix) {
-	let matrixCopy = structuredClone(matrix);
+function encodeLine(str) {
+    let result = '';
 
+    for (let i = 0; i < str.length; i++) {
+        let j = i + 1;
+        let counter = 0;
+        if (str[i] === str[j]) {
+            counter++;
 
-	for (let i = 0; i < matrixCopy.length; i++) {
-		let counter = 0;
-		let oneNum = false;
+            while (str[i] === str[j]) {
+                counter++;
+                j++;
+                i++;
+            }
+        }
 
-		let arrCheck = matrix[i];
-		let arr = matrixCopy[i];
-		let nextArr = matrixCopy[i + 1];
-		let prevArr = matrixCopy[i - 1];
+        result = (counter) ? `${result}${counter}${str[i]}` : `${result}${str[i]}`;
+    }
 
-		for (let j = 0; j < arrCheck.length; j++) {
-			if (i < matrixCopy.length - 1 && arrCheck[j] === true) {
-				counter++;
-				if (i === 0) {
-					arr[j] = arr[j] - 1;
-					if (arr[j + 1] != undefined) {
-						arr[j + 1] = 1;
-						nextArr[j + 1] = 1;
-					}
-					nextArr[j] = 1;
-					if (arr[j - 1] != undefined) {
-						arr[j - 1] = 1;
-						nextArr[j - 1] = 1;
-					}
-
-				} else {
-					if (arr[j + 1] != undefined) {
-						arr[j + 1] += 1;
-						nextArr[j + 1] += 1;
-						prevArr[j + 1] += 1;
-					}
-					nextArr[j] += 1
-					prevArr[j] += 1;
-					if (arr[j - 1] != undefined) {
-						arr[j - 1] += 1;
-						nextArr[j - 1] += 1;
-						prevArr[j - 1] += 1;
-					}
-				}
-			}
-
-
-		}
-
-		if (arr.includes(1)) {
-			oneNum = true;
-		}
-		if (!counter && !oneNum) {
-			for (let j = 0; j < arrCheck.length; j++) {
-				arr[j] = 0;
-			}
-		}
-	}
-	
-
-	return matrixCopy;
+    return result
 }
 
-const matrix1 = [
-	[true, false, false],
-	[false, true, false],
-	[false, false, false]
-]
-
-console.log(minesweeper(matrix1))
-//The result should be following:
-//[
-//[1, 2, 1],
-//[2, 1, 1],
-//[1, 1, 1]
-//]
-
-console.log(minesweeper([
-	[false, false, false],
-	[false, false, false],
-]));
-
-
+console.log(encodeLine('abbcca'))
+//, 'a2b2ca');
+console.log(encodeLine('xyz'))
+//, 'xyz');
