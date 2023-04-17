@@ -31,7 +31,7 @@ function transform(arr) {
 			if (copyArr[i].includes('--discard-') || copyArr[i].includes('--double-')) {
 
 				if (!indexElementRemove.includes(i + 1) && copyArr[i + 1]) {
-					if (copyArr[i] === '--discard-next') {
+                    if (copyArr[i] === '--discard-next' || copyArr[i] === '--discrard-next') {
 						indexElementRemove.push(i + 1);
 						delete result[i + 1];
 					}
@@ -67,6 +67,7 @@ function transform(arr) {
 
 	return Object.values(result);
 }
+   
 
 module.exports = {
   transform
