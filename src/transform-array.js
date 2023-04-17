@@ -27,11 +27,13 @@ function transform(arr) {
 	let indexElementDouble = [];
 
 	for (let i = 0; i < copyArr.length; i++) {
+        
 		if (typeof copyArr[i] === 'string') {
+           
 			if (copyArr[i].includes('--discard-') || copyArr[i].includes('--double-')) {
 
 				if (!indexElementRemove.includes(i + 1) && copyArr[i + 1]) {
-                    if (copyArr[i] === '--discard-next' || copyArr[i] === '--discrard-next') {
+                    if (copyArr[i] === '--discard-next') {
 						indexElementRemove.push(i + 1);
 						delete result[i + 1];
 					}
@@ -57,12 +59,15 @@ function transform(arr) {
 				}
 
 				indexElementRemove.push(i);
-			}
-		}
+			} else {
+                result[i] = copyArr[i];
+            }
 
-		if (!indexElementRemove.includes(i) && !indexElementDouble.includes(i)) {
-			result[i] = copyArr[i];
-		}
+		} 
+        
+        if (!indexElementRemove.includes(i) && !indexElementDouble.includes(i)) {
+            result[i] = copyArr[i];
+        }
 	}
 
 	return Object.values(result);
