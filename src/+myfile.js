@@ -1,26 +1,87 @@
-function encodeLine(str) {
-    let result = '';
+function repeater(str, options) {
+    let result = [];
 
-    for (let i = 0; i < str.length; i++) {
-        let j = i + 1;
-        let counter = 0;
-        if (str[i] === str[j]) {
-            counter++;
+    let counter = options.repeatTimes;
 
-            while (str[i] === str[j]) {
-                counter++;
-                j++;
-                i++;
-            }
-        }
+    if (!counter) counter = 1;
 
-        result = (counter) ? `${result}${counter}${str[i]}` : `${result}${str[i]}`;
+    let checkStr;
+    let checkAddition;
+
+    try {
+        checkStr = String(str);
+        str = checkStr;
+    } catch (err) {
+        checkStr = 0;
     }
 
-    return result
+    try {
+        checkAddition = String(options.addition);
+        options.addition = checkAddition;
+    } catch (err) {
+        checkAddition = 0;
+    }
+
+    if (checkStr) {
+        while (counter) {
+            let additionCounter = options.additionRepeatTimes;
+            result.push(str);
+
+            if (checkAddition) {
+
+                if (!additionCounter) additionCounter = 1;
+
+                while (additionCounter) {
+                    result.push(options.addition);
+                    additionCounter--;
+
+                    if (additionCounter) {
+                        if (options.additionSeparator) {
+                            result.push(options.additionSeparator);
+                        } else {
+                            result.push('|');
+                        }
+                    }
+                }
+            }
+            counter--;
+
+            if (counter) {
+                if (options.separator) {
+                    result.push(options.separator);
+                } else {
+                    result.push('+');
+                }
+            }
+        }
+    }
+
+    return result.join('');
 }
 
-console.log(encodeLine('abbcca'))
-//, 'a2b2ca');
-console.log(encodeLine('xyz'))
-//, 'xyz');
+console.log(repeater('LALA', { repeatTimes: 3, separator: 's', addition: '++', additionRepeatTimes: 1 }))
+//, 'LALA++sLALA++sLALA++'))
+
+console.log(repeater('STRING', { repeatTimes: 3, separator: '**', addition: 'PLUS', additionRepeatTimes: 3, additionSeparator: '00' }))
+// 'STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'))
+
+console.log(repeater('TESTstr', { separator: 'ds', addition: 'ADD!', additionSeparator: ')))000' }))
+//, 'TESTstrADD!');)
+
+console.log(repeater(true, { repeatTimes: 3, separator: '??? ', addition: false, additionRepeatTimes: 2, additionSeparator: '!!!' }))
+//, 'truefalse!!!false??? truefalse!!!false??? truefalse!!!false');)
+
+
+console.log(repeater(null, { repeatTimes: 3, separator: '??? ', addition: null, additionRepeatTimes: 3, additionSeparator: '!!!' }))
+//, 'nullnull!!!null!!!null??? nullnull!!!null!!!null??? nullnull!!!null!!!null');
+
+
+/*
+For example: 
+repeater(
+'STRING', { repeatTimes: 3, separator: '**', addition: 'PLUS', additionRepeatTimes: 3, additionSeparator: '00' }) 
+=> 'STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'
+*/
+let a = null;
+
+console.log(String(a))
